@@ -1,5 +1,7 @@
 package _01_Lambda_Methods;
 
+import javax.xml.stream.events.Characters;
+
 public class LambdaMethods {
 	public static void main(String[] args) {
 		// 1. Look at the SpecialPrinter function interface.
@@ -13,6 +15,16 @@ public class LambdaMethods {
 		}, "repeat");
 		
 		//2. Call the printCustonMessage method using a lambda so that the String prints backwards.
+		printCustomMessage((s) -> {
+			StringBuilder str = new StringBuilder();
+			Characters[] forwards = new Characters[s.length()];
+			for (int i = 0; i < s.length(); i++) {
+				forwards[i] = 
+				
+			}
+		
+			
+		}, "backwards");
 		
 		//3. Call the printCustonMessage method using a lambda so that the String prints with a mix between upper an lower case characters.
 		
