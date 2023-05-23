@@ -28,305 +28,305 @@ import processing.core.PApplet;
  *     there's a mine there.
  */
 public class Minesweeper extends PApplet {
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 440;
+	public static final int WIDTH = 400;
+	public static final int HEIGHT = 440;
 
-    int rows, cols;
-    Button startButton;
-    boolean gameReady = false;
-    boolean gameInProgress = false;
-    int gameTimeSec;
-    int nowMs;
+	int rows, cols;
+	Button startButton;
+	boolean gameReady = false;
+	boolean gameInProgress = false;
+	int gameTimeSec;
+	int nowMs;
 
-    /*
-     * Game settings
-     */
-    int cellWidth = 40;             // in pixels
-    int headerHeight = cellWidth;   // height of game info header
-    int numOfMines = 10;            // total number of mines in the game
-    int minesFlagged = 0;           // number of mines flagged
-    int cellColor = 0xBFC0BB;       // color of unrevealed cell
-    
-    /*
-     * The cells list below contains the cells for the game. Each cell in the
-     * list has the following member variables:
-     * boolean mine;        // true = this cell is a mine
-     * boolean revealed;    // true = this cell has been clicked and revealed
-     * boolean flagged;     // true = this cell has a flag
-     */
-    List<Cell> cells;
-    
-    /*
-     * Complete the method below using streams. Use the forEach() method so all
-     * the Cell objects in the cell list are marked as revealed.
-     * 
-     * *Note* This can be done using a for loop, but try to do it with Streams.
-     */
-    void revealAllCells() {
-        
-    }
-    
-    /*
-     * Complete the method below using streams so that it returns true if all
-     * the cells without mines have been revealed. Otherwise return false.
-     * You may find the following stream methods useful:
-     *  filter()    // keep the items in the stream if the filter condition
-     *                 returns true, remove all others
-     *  count()     // returns how many items are in the stream
-     *  noneMatch() // returns true if no items in the stream match the condition
-     */
-    boolean checkWin() {
-        return false;
-    }
-    
-    /*
-     * A cell was clicked and this method needs to:
-     * 1. Only do the following steps if the cell is NOT a mine.
-     * 2. Mark the cell as revealed.
-     * 3. If there are no mines around this cell (cell.minesAround == 0),
-     *    call the getNeighbors() method to return a list of all the
-     *    surrounding Cell objects.
-     * 4. Use a stream to reveal any of the neighboring cells in the list.
-     *    The filter() and/or forEach() methods may be useful.
-     * 5. Call revealCell() recursively to check if any neighbors (and
-     *    neighbors of those neighbors) also need to be revealed.
-     *    For example:
-     *        M 1 - -       // When the cell with the X is clicked all
-     *        1 1 - X       // cells with '-' should be revealed
-     *        - - - -
-     */
-    void revealCell(Cell cell) {
-        
-    }
-    
-    /*
-     * Complete this method using streams to set the number of surrounding
-     * mines, cell.minesAround, for each cell in the cells List.
-     * 1. Convert the cells list to a stream.
-     * 2. Use forEach() to iterate through each cell.
-     * 3. Call getNeighbors() to get a List of all the surrounding cell objects
-     * 4. Convert the list of neighbors to a stream.
-     * 5. Use a map() or mapToInt() to convert each neighbor that is a mine
-     *    to a 1.
-     * 6. Use reduce() or sum() to count the number of 1s, i.e. mines
-     */
-    void setNumberOfSurroundingMines() {
-        
-    }
-    
-    @Override
-    public void settings() {
-        size(WIDTH, HEIGHT);
-    }
+	/*
+	 * Game settings
+	 */
+	int cellWidth = 40; // in pixels
+	int headerHeight = cellWidth; // height of game info header
+	int numOfMines = 10; // total number of mines in the game
+	int minesFlagged = 0; // number of mines flagged
+	int cellColor = 0xBFC0BB; // color of unrevealed cell
 
-    @Override
-    public void setup() {
-        initializeGameData();
-    }
+	/*
+	 * The cells list below contains the cells for the game. Each cell in the list
+	 * has the following member variables: boolean mine; // true = this cell is a
+	 * mine boolean revealed; // true = this cell has been clicked and revealed
+	 * boolean flagged; // true = this cell has a flag
+	 */
+	List<Cell> cells;
 
-    @Override
-    public void draw() {
-        if (gameReady) {
-            drawGameHeader();
+	/*
+	 * Complete the method below using streams. Use the forEach() method so all the
+	 * Cell objects in the cell list are marked as revealed.
+	 * 
+	 * *Note* This can be done using a for loop, but try to do it with Streams.
+	 */
+	void revealAllCells() {
+		cells.forEach((cell) -> cell.revealed = true);
+	}
 
-            for (Cell c : cells) {
-                c.draw();
-            }
+	/*
+	 * Complete the method below using streams so that it returns true if all the
+	 * cells without mines have been revealed. Otherwise return false. You may find
+	 * the following stream methods useful: filter() // keep the items in the stream
+	 * if the filter condition returns true, remove all others count() // returns
+	 * how many items are in the stream noneMatch() // returns true if no items in
+	 * the stream match the condition
+	 */
+	boolean checkWin() {
+		cells.stream().filter((cell) -> cell.mine = true);
 
-            updateGameTime();
-        }
-    }
+		if (cells.size() == 0) {
+			return true;
+		}
 
-    public static void main(String[] args) {
-        PApplet.main(Minesweeper.class.getName());
-    }
+		return false;
+	}
 
-    // =================== DO NOT MODIFY THE CODE BELOW ======================
+	/*
+	 * A cell was clicked and this method needs to: 1. Only do the following steps
+	 * if the cell is NOT a mine. 2. Mark the cell as revealed. 3. If there are no
+	 * mines around this cell (cell.minesAround == 0), call the getNeighbors()
+	 * method to return a list of all the surrounding Cell objects. 4. Use a stream
+	 * to reveal any of the neighboring cells in the list. The filter() and/or
+	 * forEach() methods may be useful. 5. Call revealCell() recursively to check if
+	 * any neighbors (and neighbors of those neighbors) also need to be revealed.
+	 * For example: M 1 - - // When the cell with the X is clicked all 1 1 - X //
+	 * cells with '-' should be revealed - - - -
+	 */
+	void revealCell(Cell cell) {
+		if (cell.mine == false) {
+			cell.revealed = true;
+			if (cell.minesAround == 0) {
+				getNeighbors(cell).stream().filter((cell1) -> cell1.minesAround == 0 && cell1.revealed == false)
+						.forEach((cell2) -> revealCell(cell2));
 
-    /*
-     * Draw top game header with # mines, start button, elapsed time
-     */
-    void drawGameHeader() {
-        background(0xBFC0BB);
-        fill(0);
-        textSize(30);
-        text(numOfMines - minesFlagged, 0, 30);
-        text(String.format("%3d", gameTimeSec), WIDTH - 75, 30);
-        startButton.draw();
-    }
+			}
+		}
+	}
 
-    /*
-     * Win or lose, reveal all cells
-     */
-    void gameEnd(String state) {
-        gameInProgress = false;
+	/*
+	 * Complete this method using streams to set the number of surrounding mines,
+	 * cell.minesAround, for each cell in the cells List. 1. Convert the cells list
+	 * to a stream. 2. Use forEach() to iterate through each cell. 3. Call
+	 * getNeighbors() to get a List of all the surrounding cell objects 4. Convert
+	 * the list of neighbors to a stream. 5. Use a map() or mapToInt() to convert
+	 * each neighbor that is a mine to a 1. 6. Use reduce() or sum() to count the
+	 * number of 1s, i.e. mines
+	 */
+	void setNumberOfSurroundingMines() {
+		cells.stream().forEach((cell3) -> getNeighbors(cell3).stream().filter((neighbor1) -> return neighbor1.mine).length().mapToInt((neighbor) -> 1).sum());
+	}
 
-        if (state.equalsIgnoreCase("won")) {
-            Cell.mineImg = Cell.wonImg;
-        }
-        
-        revealAllCells();
-    }
+	@Override
+	public void settings() {
+		size(WIDTH, HEIGHT);
+	}
 
-    /*
-     * Return the cell that the mouse is currently hovering over
-     */
-    Cell checkCellPressed() {
-        Cell cell = null;
+	@Override
+	public void setup() {
+		initializeGameData();
+	}
 
-        for (Cell c : cells) {
-            if (c.x < mouseX && (c.x + cellWidth) > mouseX && c.y < mouseY && (c.y + cellWidth) > mouseY) {
-                cell = c;
-                break;
-            }
-        }
+	@Override
+	public void draw() {
+		if (gameReady) {
+			drawGameHeader();
 
-        return cell;
-    }
+			for (Cell c : cells) {
+				c.draw();
+			}
 
-    /*
-     * Setup cell size, images, and start button
-     */
-    void initializeGameData() {
+			updateGameTime();
+		}
+	}
 
-        this.rows = width / cellWidth;
-        this.cols = (height - headerHeight) / cellWidth;
+	public static void main(String[] args) {
+		PApplet.main(Minesweeper.class.getName());
+	}
 
-        Cell.initializeImages(this, cellWidth);
-        Button.initialize(this);
+	// =================== DO NOT MODIFY THE CODE BELOW ======================
 
-        gameTimeSec = 0;
+	/*
+	 * Draw top game header with # mines, start button, elapsed time
+	 */
+	void drawGameHeader() {
+		background(0xBFC0BB);
+		fill(0);
+		textSize(30);
+		text(numOfMines - minesFlagged, 0, 30);
+		text(String.format("%3d", gameTimeSec), WIDTH - 75, 30);
+		startButton.draw();
+	}
 
-        if (startButton == null) {
-            startButton = new Button("Start", (width / 2) - 50, 0, 100, cellWidth);
-        }
+	/*
+	 * Win or lose, reveal all cells
+	 */
+	void gameEnd(String state) {
+		gameInProgress = false;
 
-        initializeCells();
-        initializeMines();
-    }
+		if (state.equalsIgnoreCase("won")) {
+			Cell.mineImg = Cell.wonImg;
+		}
 
-    /*
-     * Setup cells, place mines, start game timer
-     */
-    void initializeCells() {
-        cells = new ArrayList<>();
+		revealAllCells();
+	}
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                cells.add(new Cell(i, j, cellColor, headerHeight));
-            }
-        }
-    }
+	/*
+	 * Return the cell that the mouse is currently hovering over
+	 */
+	Cell checkCellPressed() {
+		Cell cell = null;
 
-    /*
-     * Randomize mines in cells, set number of surrounding mines
-     */
-    void initializeMines() {
+		for (Cell c : cells) {
+			if (c.x < mouseX && (c.x + cellWidth) > mouseX && c.y < mouseY && (c.y + cellWidth) > mouseY) {
+				cell = c;
+				break;
+			}
+		}
 
-        // Don't place any mines if more than the number of cells--invalid starting
-        // state
-        if (numOfMines < (rows * cols)) {
-            minesFlagged = 0;
-            int mines_placed = 0;
+		return cell;
+	}
 
-            while (mines_placed != numOfMines) {
-                Cell rand_cell = cells.get((int) (random(0, (rows * cols))));
+	/*
+	 * Setup cell size, images, and start button
+	 */
+	void initializeGameData() {
 
-                if (!rand_cell.mine) {
-                    rand_cell.mine = true;
-                    mines_placed += 1;
-                }
-            }
-            gameReady = true;
-        }
+		this.rows = width / cellWidth;
+		this.cols = (height - headerHeight) / cellWidth;
 
-        // Set number of mines around each cell, zero to eight
-        setNumberOfSurroundingMines();
-    }
+		Cell.initializeImages(this, cellWidth);
+		Button.initialize(this);
 
-    /*
-     * Start game timer at the very end for best accuracy
-     */
-    void startGameTimer() {
-        nowMs = millis();
-    }
+		gameTimeSec = 0;
 
-    /*
-     * Tracks game timer ~1 sec increments
-     */
-    void updateGameTime() {
-        if (gameInProgress) {
-            if (millis() > nowMs + 1000) {
-                gameTimeSec += 1;
-                nowMs = millis();
-            }
-        }
-    }
+		if (startButton == null) {
+			startButton = new Button("Start", (width / 2) - 50, 0, 100, cellWidth);
+		}
 
-    /*
-     * Return list of all cells around specified cell
-     */
-    List<Cell> getNeighbors(Cell cell) {
-        List<Cell> neighbors = new ArrayList<>();
-        
-        for (Cell c : cells) {
-            if ((c.i >= cell.i - 1) &&
-                (c.i <= cell.i + 1) &&
-                (c.j >= cell.j - 1) &&
-                (c.j <= cell.j + 1))
-            {
-                neighbors.add(c);
-            }
-        }
-        
-        return neighbors;
-    }
+		initializeCells();
+		initializeMines();
+	}
 
-    /*
-     * Right mouse button: flag cell Left mouse button: reveal cell (mine, number,
-     * or empty)
-     */
-    @Override
-    public void mousePressed() {
-        if (startButton.mouseIsOver()) {
-            gameInProgress = true;
-            initializeGameData();
+	/*
+	 * Setup cells, place mines, start game timer
+	 */
+	void initializeCells() {
+		cells = new ArrayList<>();
 
-            startGameTimer();
-            return;
-        } else if (!gameInProgress) {
-            // Don't allow clicking on the cells before pressing the start button
-            return;
-        }
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				cells.add(new Cell(i, j, cellColor, headerHeight));
+			}
+		}
+	}
 
-        Cell cell = checkCellPressed();
+	/*
+	 * Randomize mines in cells, set number of surrounding mines
+	 */
+	void initializeMines() {
 
-        if (cell != null) {
-            if (mouseButton == RIGHT) {
-                if (!cell.revealed) {
-                    cell.flagged = !cell.flagged;
-                    if (cell.flagged) {
-                        minesFlagged += 1;
-                    } else {
-                        minesFlagged -= 1;
-                    }
-                }
+		// Don't place any mines if more than the number of cells--invalid starting
+		// state
+		if (numOfMines < (rows * cols)) {
+			minesFlagged = 0;
+			int mines_placed = 0;
 
-            } else if (mouseButton == LEFT) {
-                // Don't reveal pinned/marked cells. User must unpin to reveal.
-                if (cell.flagged) {
-                    return;
-                }
-                revealCell(cell);
+			while (mines_placed != numOfMines) {
+				Cell rand_cell = cells.get((int) (random(0, (rows * cols))));
 
-                if (cell.mine) {
-                    gameEnd("Lost");
-                } else {
-                    if( checkWin() ) {
-                        gameEnd("Won");
-                    }
-                }
-            }
-        }
-    }
+				if (!rand_cell.mine) {
+					rand_cell.mine = true;
+					mines_placed += 1;
+				}
+			}
+			gameReady = true;
+		}
+
+		// Set number of mines around each cell, zero to eight
+		setNumberOfSurroundingMines();
+	}
+
+	/*
+	 * Start game timer at the very end for best accuracy
+	 */
+	void startGameTimer() {
+		nowMs = millis();
+	}
+
+	/*
+	 * Tracks game timer ~1 sec increments
+	 */
+	void updateGameTime() {
+		if (gameInProgress) {
+			if (millis() > nowMs + 1000) {
+				gameTimeSec += 1;
+				nowMs = millis();
+			}
+		}
+	}
+
+	/*
+	 * Return list of all cells around specified cell
+	 */
+	List<Cell> getNeighbors(Cell cell) {
+		List<Cell> neighbors = new ArrayList<>();
+
+		for (Cell c : cells) {
+			if ((c.i >= cell.i - 1) && (c.i <= cell.i + 1) && (c.j >= cell.j - 1) && (c.j <= cell.j + 1)) {
+				neighbors.add(c);
+			}
+		}
+
+		return neighbors;
+	}
+
+	/*
+	 * Right mouse button: flag cell Left mouse button: reveal cell (mine, number,
+	 * or empty)
+	 */
+	@Override
+	public void mousePressed() {
+		if (startButton.mouseIsOver()) {
+			gameInProgress = true;
+			initializeGameData();
+
+			startGameTimer();
+			return;
+		} else if (!gameInProgress) {
+			// Don't allow clicking on the cells before pressing the start button
+			return;
+		}
+
+		Cell cell = checkCellPressed();
+
+		if (cell != null) {
+			if (mouseButton == RIGHT) {
+				if (!cell.revealed) {
+					cell.flagged = !cell.flagged;
+					if (cell.flagged) {
+						minesFlagged += 1;
+					} else {
+						minesFlagged -= 1;
+					}
+				}
+
+			} else if (mouseButton == LEFT) {
+				// Don't reveal pinned/marked cells. User must unpin to reveal.
+				if (cell.flagged) {
+					return;
+				}
+				revealCell(cell);
+
+				if (cell.mine) {
+					gameEnd("Lost");
+				} else {
+					if (checkWin()) {
+						gameEnd("Won");
+					}
+				}
+			}
+		}
+	}
 }
