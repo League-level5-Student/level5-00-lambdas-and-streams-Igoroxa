@@ -62,7 +62,7 @@ public class Minesweeper extends PApplet {
 	 * *Note* This can be done using a for loop, but try to do it with Streams.
 	 */
 	void revealAllCells() {
-		cells.forEach((cell) -> cell.revealed = true);
+		cells.stream().forEach((cell) -> cell.revealed = true);
 	}
 
 	/*
@@ -74,7 +74,7 @@ public class Minesweeper extends PApplet {
 	 * the stream match the condition
 	 */
 	boolean checkWin() {
-		cells.stream().filter((cell) -> cell.mine = true);
+		cells.stream().filter((cell1) -> cell1.mine == true);
 
 		if (cells.size() == 0) {
 			return true;
@@ -94,12 +94,13 @@ public class Minesweeper extends PApplet {
 	 * For example: M 1 - - // When the cell with the X is clicked all 1 1 - X //
 	 * cells with '-' should be revealed - - - -
 	 */
+	
 	void revealCell(Cell cell) {
 		if (cell.mine == false) {
 			cell.revealed = true;
 			if (cell.minesAround == 0) {
-				getNeighbors(cell).stream().filter((cell1) -> cell1.minesAround == 0 && cell1.revealed == false)
-						.forEach((cell2) -> revealCell(cell2));
+				System.out.println("works");
+				getNeighbors(cell).stream().filter((cell4) -> cell4.minesAround == 0 && cell4.revealed == false).forEach((cell4) -> revealCell(cell4));
 
 			}
 		}
@@ -114,10 +115,11 @@ public class Minesweeper extends PApplet {
 	 * each neighbor that is a mine to a 1. 6. Use reduce() or sum() to count the
 	 * number of 1s, i.e. mines
 	 */
+	
 	void setNumberOfSurroundingMines() {
-		cells.stream().forEach((cell3) -> getNeighbors(cell3).stream().filter((neighbor1) -> return neighbor1.mine).length().mapToInt((neighbor) -> 1).sum());
+	 cells.stream().forEach((cell3) -> getNeighbors(cell3).stream().filter((neighbor) -> neighbor.mine == true).mapToInt((neighbor) -> 1).sum());
 	}
-
+	
 	@Override
 	public void settings() {
 		size(WIDTH, HEIGHT);
